@@ -67,5 +67,5 @@ export const stopPortalSdk = async () => {
 };
 
 export const updatePortalNativeChains = async (nativeChains: NativeChains) => {
-    return initializePortalSdk({ nativeChains });
+    return initializePortalSdk({ nativeChains, forceUpdate: true });
 };
