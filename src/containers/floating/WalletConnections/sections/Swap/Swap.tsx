@@ -27,9 +27,13 @@ import PortalLogo from '../../icons/PortalLogo.png';
 import { SignMessage } from '../SignMessage/SignMessage';
 import { useToastStore } from '@app/components/ToastStack/useToastStore';
 import { StatusList, StatusListEntry } from '@app/components/transactions/components/StatusList/StatusList';
+import usePortalSdk from '@app/hooks/portal/usePortalSdk';
 
 export const Swap = () => {
     const [signMessageModalOpen, setSignMessageModalOpen] = useState(false);
+
+    const { sdk } = usePortalSdk();
+
     const dataAcc = useAccount();
     const { data: accountBalance } = useBalance({ address: dataAcc.address });
     const activeChainIcon = useMemo(() => {

@@ -1,8 +1,10 @@
-import { useContext, useEffect } from 'react';
-import { PortalSdkContext, PortalSdkInstance } from './PortalSdkProvider';
+import { useEffect } from 'react';
+import { usePortalSdkStore } from '@app/store/usePortalSdkStore';
+import { MockPortalSdk } from './MockPortalSdk';
+import { initializePortalSdk, stopPortalSdk } from '@app/store/actions/portalSdkActions';
 
 export interface UseSdkResult {
-    sdk: PortalSdkInstance | null;
+    sdk: MockPortalSdk | null;
     isSdkLoading: boolean;
     sdkError: Error | null;
 }
@@ -17,13 +19,14 @@ export interface PortalSdkEventCallbacks {
 }
 
 const usePortalSdk = (callbacks?: PortalSdkEventCallbacks): UseSdkResult => {
-    const context = useContext(PortalSdkContext);
+    const { sdk, isSdkLoading, sdkError } = usePortalSdkStore();
 
-    if (context === undefined) {
-        throw new Error('useSdk must be used within an SdkProvider');
-    }
-
-    const { sdk, isSdkLoading, sdkError } = context;
+    useEffect(() => {
+        initializePortalSdk({ nativeChains: new Map() });
+        return () => {
+            stopPortalSdk();
+        };
+    }, [sdk]);
 
     useEffect(() => {
         const { error, swapMatched, swapHolderInvoiced, swapSeekerInvoiced, swapHolderPaid, swapSeekerPaid } =
