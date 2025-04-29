@@ -261,6 +261,7 @@ export abstract class BaseClass {
 export interface SdkProps {
     id: string;
     db: string;
+    nativeChains: Map<string, any>;
 }
 
 export class MockPortalSdk extends BaseClass {
